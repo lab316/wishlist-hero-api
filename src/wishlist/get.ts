@@ -1,4 +1,3 @@
-import axios from "axios";
 import { Wishlist } from "../types";
 
 interface Response {
@@ -11,13 +10,17 @@ export const getWishlist = (
   hash: string,
   customerId: string | null
 ) =>
-  axios.get<Response>(
-    `https://wishlist-hero.revampco.com/storefront/api/store/${store}/wishlist`,
+  fetch(
+    `https://wishlist-hero.revampco.com/storefront/api/store/${store}/wishlist?${new URLSearchParams(
+      customerId
+        ? {
+            h: hash,
+            c: customerId,
+          }
+        : { h: hash }
+    )}`,
     {
-      params: {
-        h: hash,
-        c: customerId,
-      },
+      method: "GET",
       headers: {
         authority: "wishlist-hero.revampco.com",
         accept: "application/json, text/plain, */*",
@@ -26,4 +29,4 @@ export const getWishlist = (
         referer: `https://${store}`,
       },
     }
-  );
+  ).then((res) => res.json() as unknown as Response);

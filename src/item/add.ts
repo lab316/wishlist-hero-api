@@ -1,4 +1,3 @@
-import axios from "axios";
 import { Product } from "../types";
 
 interface Response {
@@ -13,18 +12,10 @@ export const addItem = (
   product: Product,
   customerId: string | null
 ) =>
-  axios.post<Response>(
+  fetch(
     `https://wishlist-hero.revampco.com/storefront/api/store/${store}/wishlist/${hash}`,
     {
-      customerId,
-      productId: product.id,
-      productName: product.name,
-      productPrice: product.price,
-      productLink: product.link,
-      productVariantId: product.variantId,
-      productImage: product.image,
-    },
-    {
+      method: "POST",
       headers: {
         authority: "wishlist-hero.revampco.com",
         accept: "application/json, text/plain, */*",
@@ -33,5 +24,14 @@ export const addItem = (
         origin: `https://${store}`,
         referer: `https://${store}`,
       },
+      body: JSON.stringify({
+        customerId,
+        productId: product.id,
+        productName: product.name,
+        productPrice: product.price,
+        productLink: product.link,
+        productVariantId: product.variantId,
+        productImage: product.image,
+      }),
     }
-  );
+  ).then((res) => res.json() as unknown as Response);

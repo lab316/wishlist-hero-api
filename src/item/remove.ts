@@ -1,14 +1,13 @@
-import axios from "axios";
-
 interface Response {
   ok: boolean;
   deleted: boolean;
 }
 
 export const removeItem = (store: string, hash: string, variantId: number) =>
-  axios.post<Response>(
+  fetch(
     `https://wishlist-hero.revampco.com/storefront/api/store/${store}/wishlist/${hash}/delete/${variantId}`,
     {
+      method: "POST",
       headers: {
         authority: "wishlist-hero.revampco.com",
         accept: "application/json, text/plain, */*",
@@ -18,4 +17,4 @@ export const removeItem = (store: string, hash: string, variantId: number) =>
         referer: `https://${store}`,
       },
     }
-  );
+  ).then((res) => res.json() as unknown as Response);

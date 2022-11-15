@@ -17,7 +17,6 @@
   },
   "homepage": "https://github.com/lab316/wishlist-hero-api#readme",
   "dependencies": {
-    "axios": "^1.1.3",
     "typescript": "^4.8.4"
   },
   "files": [
